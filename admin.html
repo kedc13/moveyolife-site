@@ -106,7 +106,7 @@ async function load() {
   const r = await api("events.json?ref=main&t=" + Date.now());
   if (r.status === 404) { events = []; sha = null; status("No events file yet — add events and publish."); render(); return true; }
   if (!r.ok) { status("Couldn’t connect (" + r.status + "). Check the repo name and token."); return false; }
-  const j = await r.json(); sha = j.sha; events = JSON.parse(dec(j.content)); dirty = false; status("Loaded"); render(); return true;
+  const j = await r.json(); sha = j.sha; events = JSON.parse(dec(j.content)); dirty = false; status("All changes published"); render(); return true;
 }
 $("publish").onclick = async () => {
   $("publish").disabled = true; status("Publishing…");
