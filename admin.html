@@ -1,0 +1,123 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>MOVE YO LIFE — Events admin</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#F6F4F1;color:#231F20;font:15px/1.45 Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#231F20}a:hover{color:#000}
+.wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;gap:28px}
+h1{font:700 32px/1.05 Helvetica,Arial,sans-serif;letter-spacing:-.02em;margin:0}h2{font:700 13px/1 Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;margin:0 0 14px}
+.card{background:#fff;border:1px solid #E2DED8;border-radius:20px;padding:22px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.full{grid-column:1/-1}
+label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#5A5552}
+input,textarea{font:400 15px/1.3 Helvetica,Arial,sans-serif;padding:11px 12px;border:1px solid #D6D1CA;border-radius:10px;background:#fff;color:#231F20;text-transform:none;letter-spacing:0}
+textarea{min-height:64px;resize:vertical}
+.btn{font:700 14px/1 Helvetica,Arial,sans-serif;padding:13px 20px;border-radius:999px;border:1px solid #231F20;background:transparent;color:#231F20;cursor:pointer}
+.btn.ink{background:#231F20;color:#fff}.btn:disabled{opacity:.4;cursor:default}.btn.sm{padding:9px 14px;font-size:13px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.ev{display:grid;grid-template-columns:90px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-top:1px solid #ECE8E3}
+.ev:first-child{border-top:0}.ev .d{font-weight:700;font-size:18px}.ev .m{color:#5A5552;font-size:13px}.past{opacity:.45}
+#status{font-size:13px;color:#5A5552;min-height:1em}
+.hide{display:none}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.ev{grid-template-columns:70px minmax(0,1fr)}.ev .act{grid-column:1/-1}}
+</style></head>
+<body><div class="wrap">
+<div class="row" style="justify-content:space-between"><h1>Events</h1><a href="./" target="_blank">View site ↗</a></div>
+
+<div class="card" id="setup">
+<h2>Connect (one time per device)</h2>
+<div class="grid">
+<label class="full">GitHub repo<input id="repo" value="kedc13/moveyolife-site"></label>
+<label class="full">Access token<input id="token" type="password" placeholder="github_pat_…"></label>
+</div>
+<div class="row" style="margin-top:14px"><button class="btn ink" id="connect">Connect</button><span class="m" style="font-size:13px;color:#5A5552">Saved only in this browser.</span></div>
+</div>
+
+<div id="app" class="hide" style="display:flex;flex-direction:column;gap:28px">
+<div class="card"><h2>Upcoming & past</h2><div id="list"></div></div>
+<div class="card">
+<h2 id="formTitle">Add event</h2>
+<div class="grid">
+<label>Date<input id="f_day" type="date"></label>
+<label>Time<input id="f_time" placeholder="7PM - 8:15PM PST"></label>
+<label class="full">Title<input id="f_title" placeholder="Hybrid Kunda-Yin Yoga"></label>
+<label class="full">Second line (optional)<input id="f_subtitle" placeholder="Meditation & Sound Healing"></label>
+<label>Venue<input id="f_venue" placeholder="@3TFITNESS"></label>
+<label>Price<input id="f_price" placeholder="$22 or Donation"></label>
+<label class="full">Address<input id="f_address" placeholder="7143 E Southern Ave Suite #129 Mesa, AZ 85209"></label>
+<label class="full">Note (optional)<textarea id="f_note" placeholder="Or live online — private link posted day of"></textarea></label>
+<label class="full">Booking / payment link (optional)<input id="f_link" placeholder="https://… (Venmo, Cash App, form). Blank = Contact page"></label>
+</div>
+<div class="row" style="margin-top:16px"><button class="btn ink" id="add">Add event</button><button class="btn hide" id="cancel">Cancel edit</button></div>
+</div>
+<div class="row"><button class="btn ink" id="publish" disabled>Publish changes</button><span id="status"></span></div>
+<div class="row"><button class="btn sm" id="logout">Disconnect this device</button></div>
+</div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+const F = ["day","time","title","subtitle","venue","price","address","note","link"];
+const MON = ["Jan.","Feb.","Mar.","Apr.","May","June","July","Aug.","Sept.","Oct.","Nov.","Dec."];
+let events = [], sha = null, dirty = false, editing = -1;
+const today = new Date().toISOString().slice(0,10);
+const enc = s => btoa(unescape(encodeURIComponent(s)));
+const dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g,""))));
+const cfg = () => ({ repo: localStorage.getItem("myl_repo") || $("repo").value.trim(), token: localStorage.getItem("myl_token") || "" });
+const api = (path, opt = {}) => { const c = cfg(); return fetch("https://api.github.com/repos/" + c.repo + "/contents/" + path, { ...opt, headers: { Authorization: "Bearer " + c.token, Accept: "application/vnd.github+json", ...(opt.headers || {}) } }); };
+const status = (t) => $("status").textContent = t;
+const show = d => d.date || (d.day ? MON[+d.day.slice(5,7)-1] + " " + (+d.day.slice(8)) : "—");
+const titleOf = e => Array.isArray(e.title) ? e.title.join(" · ") : [e.title, e.subtitle].filter(Boolean).join(" · ");
+function render() {
+  const sorted = events.map((e,i)=>({e,i})).sort((a,b)=>(a.e.day||"").localeCompare(b.e.day||""));
+  $("list").innerHTML = sorted.length ? "" : '<p style="color:#5A5552;margin:0">No events yet. Add one below.</p>';
+  sorted.forEach(({e,i}) => {
+    const r = document.createElement("div"); r.className = "ev" + (e.day && e.day < today ? " past" : "");
+    r.innerHTML = '<div class="d"></div><div><div style="font-weight:700"></div><div class="m"></div></div><div class="row act"><button class="btn sm">Edit</button><button class="btn sm">Delete</button></div>';
+    r.children[0].textContent = show(e) + (e.day && e.day < today ? " (past)" : "");
+    r.children[1].children[0].textContent = titleOf(e);
+    r.children[1].children[1].textContent = [e.venue, e.time, e.price].filter(Boolean).join(" · ");
+    const [ed, del] = r.querySelectorAll("button");
+    ed.onclick = () => startEdit(i);
+    del.onclick = () => { if (confirm("Delete “" + titleOf(e) + "”?")) { events.splice(i,1); mark(); } };
+    $("list").appendChild(r);
+  });
+  $("publish").disabled = !dirty;
+}
+function mark() { dirty = true; status("Unpublished changes"); render(); }
+function clearForm() { F.forEach(k => $("f_"+k).value = ""); editing = -1; $("formTitle").textContent = "Add event"; $("add").textContent = "Add event"; $("cancel").classList.add("hide"); }
+function startEdit(i) {
+  const e = events[i]; editing = i;
+  const t = Array.isArray(e.title) ? e.title : [e.title, e.subtitle];
+  F.forEach(k => $("f_"+k).value = e[k] || "");
+  $("f_title").value = t[0] || ""; $("f_subtitle").value = t[1] || "";
+  $("formTitle").textContent = "Edit event"; $("add").textContent = "Save edit"; $("cancel").classList.remove("hide");
+  window.scrollTo({ top: $("formTitle").getBoundingClientRect().top + scrollY - 40, behavior: "smooth" });
+}
+$("cancel").onclick = clearForm;
+$("add").onclick = () => {
+  const e = {}; F.forEach(k => { const v = $("f_"+k).value.trim(); if (v) e[k] = v; });
+  if (!e.day || !e.title) { alert("Date and title are required."); return; }
+  if (editing >= 0) events[editing] = e; else events.push(e);
+  clearForm(); mark();
+};
+async function load() {
+  status("Loading…");
+  const r = await api("events.json?ref=main&t=" + Date.now());
+  if (r.status === 404) { events = []; sha = null; status("No events file yet — add events and publish."); render(); return true; }
+  if (!r.ok) { status("Couldn’t connect (" + r.status + "). Check the repo name and token."); return false; }
+  const j = await r.json(); sha = j.sha; events = JSON.parse(dec(j.content)); dirty = false; status("Loaded"); render(); return true;
+}
+$("publish").onclick = async () => {
+  $("publish").disabled = true; status("Publishing…");
+  const body = { message: "Update events", content: enc(JSON.stringify(events, null, 2)), branch: "main" }; if (sha) body.sha = sha;
+  const r = await api("events.json", { method: "PUT", body: JSON.stringify(body) });
+  if (!r.ok) { status("Publish failed (" + r.status + "). Reload and try again."); $("publish").disabled = false; return; }
+  sha = (await r.json()).content.sha; dirty = false; render(); status("Published. Live on the site in about a minute.");
+};
+$("connect").onclick = async () => {
+  localStorage.setItem("myl_repo", $("repo").value.trim()); localStorage.setItem("myl_token", $("token").value.trim());
+  if (await load()) { $("setup").classList.add("hide"); $("app").classList.remove("hide"); } else localStorage.removeItem("myl_token");
+};
+$("logout").onclick = () => { localStorage.removeItem("myl_token"); location.reload(); };
+window.onbeforeunload = () => dirty ? "You have unpublished changes." : undefined;
+if (cfg().token) load().then(ok => { if (ok) { $("setup").classList.add("hide"); $("app").classList.remove("hide"); } });
+</script>
+</body></html>
