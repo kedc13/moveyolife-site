@@ -32,7 +32,7 @@ textarea{min-height:64px;resize:vertical}
 </div>
 
 <div id="app" class="hide" style="display:flex;flex-direction:column;gap:28px">
-<div class="card"><h2>Upcoming & past</h2><div id="list"></div></div>
+<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:14px"><h2 style="margin:0">Upcoming & past</h2><button class="btn sm hide" id="prune"></button></div><div id="list"></div></div>
 <div class="card">
 <h2 id="formTitle">Add event</h2>
 <div class="grid">
@@ -78,8 +78,12 @@ function render() {
     del.onclick = () => { if (confirm("Delete “" + titleOf(e) + "”?")) { events.splice(i,1); mark(); } };
     $("list").appendChild(r);
   });
+  const past = events.filter(e => e.day && e.day < today).length;
+  $("prune").textContent = "Remove " + past + " past event" + (past === 1 ? "" : "s");
+  $("prune").classList.toggle("hide", !past);
   $("publish").disabled = !dirty;
 }
+$("prune").onclick = () => { events = events.filter(e => !(e.day && e.day < today)); mark(); };
 function mark() { dirty = true; status("Unpublished changes"); render(); }
 function clearForm() { F.forEach(k => $("f_"+k).value = ""); editing = -1; $("formTitle").textContent = "Add event"; $("add").textContent = "Add event"; $("cancel").classList.add("hide"); }
 function startEdit(i) {
@@ -106,6 +110,7 @@ async function load() {
 }
 $("publish").onclick = async () => {
   $("publish").disabled = true; status("Publishing…");
+  events = events.filter(e => !(e.day && e.day < today));
   const body = { message: "Update events", content: enc(JSON.stringify(events, null, 2)), branch: "main" }; if (sha) body.sha = sha;
   const r = await api("events.json", { method: "PUT", body: JSON.stringify(body) });
   if (!r.ok) { status("Publish failed (" + r.status + "). Reload and try again."); $("publish").disabled = false; return; }
