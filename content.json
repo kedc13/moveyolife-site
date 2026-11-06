@@ -1,0 +1,133 @@
+{
+  "shopUrl": "",
+  "confessions": [
+    {
+      "from": "Workshop participant",
+      "time": "Sun 8:14 PM",
+      "text": [
+        "I haven’t cried like that in years. In a good way. I left feeling lighter than I have since before the baby."
+      ]
+    },
+    {
+      "from": "Retreat participant",
+      "time": "Screenshot",
+      "screenshot": ""
+    },
+    {
+      "from": "Private session",
+      "time": "Mon 4:47 PM",
+      "text": [
+        "Okay I have to tell you something.",
+        "I used the breathwork thing in the car before my interview today. Hands were shaking, heart going crazy, the whole thing. Four counts in, hold, six out, like you showed us.",
+        "I walked in calm. Like actually calm. And I got the job!!",
+        "Thank you for giving me something I can take with me."
+      ]
+    },
+    {
+      "from": "Thursday class",
+      "time": "Thu 7:02 PM",
+      "photo": "Photo from class",
+      "text": [
+        "Look at us!!",
+        "Best Thursday of my whole week. Same time next week?"
+      ],
+      "work": true
+    },
+    {
+      "from": "Workplace group",
+      "time": "Screenshot",
+      "screenshot": "",
+      "work": true
+    },
+    {
+      "from": "Retreat participant",
+      "time": "Wed 9:38 PM",
+      "text": [
+        "Three days in the mountains and I finally remembered what my body feels like when it isn’t bracing for something.",
+        "I didn’t realize how long I’d been holding my breath. Not just in class. In my life.",
+        "Already counting down to the next one."
+      ]
+    },
+    {
+      "from": "Workplace group",
+      "time": "Fri 2:15 PM",
+      "photo": "Photo from offsite",
+      "text": [
+        "My team still talks about it. Best offsite we’ve done, and nobody had to do a trust fall."
+      ],
+      "work": true
+    },
+    {
+      "from": "Thursday class",
+      "time": "Thu 9:51 PM",
+      "text": [
+        "Just wanted to say thank you. That’s it. That’s the text."
+      ]
+    }
+  ],
+  "offers": [
+    {
+      "title": "MOVE Classes",
+      "text": "Recurring experiences designed to move the body, shift the energy, create awareness, and help you reconnect.",
+      "photo": "Class in motion"
+    },
+    {
+      "title": "MOVE Workshops",
+      "text": "Deeper experiences built around a specific theme, intention, practice, or community.",
+      "photo": "Workshop, circle"
+    },
+    {
+      "title": "MOVE Events",
+      "text": "Immersive gatherings that may blend movement, breath, sound, music, community, and intentional experiences.",
+      "photo": "Event crowd"
+    },
+    {
+      "title": "MOVE Retreats",
+      "text": "Space to step away from the noise, reconnect, reset, and explore what’s next.",
+      "photo": "Retreat landscape"
+    },
+    {
+      "title": "CHIKYS",
+      "text": "Christ Conscious Hybrid Healing Infused Kundalini Yin Yoga Sacred Sound",
+      "photo": "CHIKYS, low light"
+    }
+  ],
+  "apparel": [
+    {
+      "name": "MOVE YO LIFE Tee",
+      "note": "Black · S–XXL",
+      "price": "$00",
+      "tone": "ink"
+    },
+    {
+      "name": "MOVE YO LIFE Tee",
+      "note": "Sand · S–XXL",
+      "price": "$00",
+      "tone": "sand"
+    },
+    {
+      "name": "MOVE YO LIFE Hat",
+      "note": "Black · One size",
+      "price": "$00",
+      "tone": "ink"
+    },
+    {
+      "name": "MOVE YO LIFE Hat",
+      "note": "Mist · One size",
+      "price": "$00",
+      "tone": "mist"
+    }
+  ],
+  "online": [
+    {
+      "name": "Online classes",
+      "text": "Live and on-demand MOVE classes you can join from anywhere.",
+      "status": "Coming soon"
+    },
+    {
+      "name": "Online courses",
+      "text": "Guided programs built around movement, breath, mindset, and reflection.",
+      "status": "Coming soon"
+    }
+  ]
+}

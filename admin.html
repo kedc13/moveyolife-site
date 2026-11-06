@@ -1,127 +1,325 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>MOVE YO LIFE — Events admin</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow"><title>MOVE YO LIFE — Admin</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="stylesheet" href="css/site.css">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#F6F4F1;color:#231F20;font:15px/1.45 Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
-a{color:#231F20}a:hover{color:#000}
-.wrap{max-width:760px;margin:0 auto;padding:40px 20px 80px;display:flex;flex-direction:column;gap:28px}
-h1{font:700 32px/1.05 Helvetica,Arial,sans-serif;letter-spacing:-.02em;margin:0}h2{font:700 13px/1 Helvetica,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;margin:0 0 14px}
-.card{background:#fff;border:1px solid #E2DED8;border-radius:20px;padding:22px}
+*{box-sizing:border-box}
+body{margin:0;padding:0!important;background:var(--myl-paper);color:var(--myl-ink);font:400 15px/1.45 var(--font-sans)}
+a{color:var(--myl-ink)}
+.top{position:sticky;top:0;z-index:10;background:var(--myl-white);border-bottom:1px solid var(--myl-rule)}
+.bar{max-width:880px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{font:400 26px/1 var(--font-impact);text-transform:uppercase;letter-spacing:.01em;margin-right:auto}
+.brand small{font:700 11px/1 var(--font-sans);letter-spacing:.08em;margin-left:10px;color:var(--myl-graphite);vertical-align:middle}
+#status{font-size:13px;color:var(--myl-graphite)}
+.tabs{max-width:880px;margin:0 auto;padding:0 20px;display:flex;gap:4px;overflow-x:auto}
+.tab{font:700 14px/1 var(--font-sans);padding:14px 14px 12px;border:0;border-bottom:2px solid transparent;background:none;color:var(--myl-graphite);cursor:pointer;white-space:nowrap}
+.tab[aria-selected=true]{color:var(--myl-ink);border-color:var(--myl-ink)}
+.tab .dot{display:inline-block;width:7px;height:7px;border-radius:9px;background:var(--myl-apricot);margin-left:6px;vertical-align:2px}
+main{max-width:880px;margin:0 auto;padding:28px 20px 120px;display:flex;flex-direction:column;gap:20px}
+h1{font:700 clamp(30px,5vw,44px)/1 var(--font-sans);letter-spacing:-.04em;margin:0}
+.lead{font:400 20px/1.25 var(--font-serif);margin:6px 0 0;color:var(--myl-graphite)}
+.card{background:var(--myl-white);border:1px solid var(--myl-rule);padding:20px;display:flex;flex-direction:column;gap:14px}
+.card.past{opacity:.55}
+.card-h{display:flex;align-items:center;gap:10px}
+.card-h b{font:700 11px/1 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;color:var(--myl-graphite);margin-right:auto}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.full{grid-column:1/-1}
-label{display:flex;flex-direction:column;gap:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#5A5552}
-input,textarea{font:400 15px/1.3 Helvetica,Arial,sans-serif;padding:11px 12px;border:1px solid #D6D1CA;border-radius:10px;background:#fff;color:#231F20;text-transform:none;letter-spacing:0}
-textarea{min-height:64px;resize:vertical}
-.btn{font:700 14px/1 Helvetica,Arial,sans-serif;padding:13px 20px;border-radius:999px;border:1px solid #231F20;background:transparent;color:#231F20;cursor:pointer}
-.btn.ink{background:#231F20;color:#fff}.btn.pub{background:#1F8A3B;border-color:#1F8A3B;color:#fff}.btn.pub:not(:disabled):hover{background:#18722F}.btn:disabled{opacity:.4;cursor:default}.btn.sm{padding:9px 14px;font-size:13px}
+label{display:flex;flex-direction:column;gap:6px;font:700 11px/1.2 var(--font-sans);text-transform:uppercase;letter-spacing:.06em;color:var(--myl-graphite)}
+label.chk{flex-direction:row;align-items:center;gap:8px;text-transform:none;letter-spacing:0;font-size:14px;color:var(--myl-ink)}
+input:not([type=checkbox]),textarea,select{font:400 16px/1.35 var(--font-sans);padding:11px 12px;border:1px solid var(--myl-rule);border-radius:0;background:var(--myl-white);color:var(--myl-ink);text-transform:none;letter-spacing:0;width:100%}
+input:focus,textarea:focus,select:focus,button:focus-visible{outline:2px solid var(--myl-ink);outline-offset:1px}
+textarea{min-height:84px;resize:vertical}
+.hint{font:400 13px/1.4 var(--font-sans);text-transform:none;letter-spacing:0;color:var(--myl-graphite)}
+.btn{font:700 14px/1 var(--font-sans);padding:12px 18px;border-radius:999px;border:1px solid var(--myl-ink);background:transparent;color:var(--myl-ink);cursor:pointer;min-height:44px}
+.btn:hover{background:var(--myl-mist)}
+.btn.ink{background:var(--myl-ink);color:var(--myl-white)}.btn.ink:hover{background:#000}
+.btn.sm{padding:8px 12px;min-height:34px;font-size:13px}
+.btn.icon{width:34px;min-height:34px;padding:0}
+.btn:disabled{opacity:.35;cursor:default;background:transparent}
+.btn.ink:disabled{background:var(--myl-ink)}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.ev{display:grid;grid-template-columns:90px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 0;border-top:1px solid #ECE8E3}
-.ev:first-child{border-top:0}.ev .d{font-weight:700;font-size:18px}.ev .m{color:#5A5552;font-size:13px}.past{opacity:.45}
-#status{font-size:13px;color:#5A5552;min-height:1em}
-.hide{display:none}
-@media(max-width:560px){.grid{grid-template-columns:1fr}.ev{grid-template-columns:70px minmax(0,1fr)}.ev .act{grid-column:1/-1}}
+.photo{display:flex;gap:14px;align-items:center}
+.thumb{width:88px;height:110px;flex:none;background:var(--myl-mist) center/cover no-repeat;display:flex;align-items:center;justify-content:center;font:700 10px/1.2 var(--font-sans);color:var(--myl-graphite);text-align:center;padding:6px;text-transform:uppercase;letter-spacing:.06em}
+.thumb.empty{border:1px dashed var(--myl-graphite);background:none}
+dialog{border:0;padding:0;max-width:min(720px,94vw);width:100%}
+dialog::backdrop{background:rgba(20,18,17,.7)}
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;padding:18px;max-height:70vh;overflow:auto}
+.lib button{border:0;padding:0;aspect-ratio:4/5;background:var(--myl-mist) center/cover no-repeat;cursor:pointer}
+.lib button:hover{outline:3px solid var(--myl-ink)}
+.hide{display:none!important}
+.empty-state{color:var(--myl-graphite);margin:0}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
 </style></head>
-<body><div class="wrap">
-<div class="row" style="justify-content:space-between;position:sticky;top:0;z-index:5;background:#F6F4F1;padding:12px 0;margin:-12px 0"><h1>Events</h1><div class="row" style="gap:18px"><span id="status"></span><a href="./" target="_blank">View site ↗</a><button class="btn pub" id="publish" disabled>Publish changes</button></div></div>
-
-<div class="card" id="setup">
-<h2>Connect (one time per device)</h2>
-<div class="grid">
-<label class="full">GitHub repo<input id="repo" value="kedc13/moveyolife-site"></label>
-<label class="full">Access token<input id="token" type="password" placeholder="github_pat_…"></label>
-</div>
-<div class="row" style="margin-top:14px"><button class="btn ink" id="connect">Connect</button><span class="m" style="font-size:13px;color:#5A5552">Saved only in this browser.</span></div>
-</div>
-
-<div id="app" class="hide" style="display:flex;flex-direction:column;gap:28px">
-<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:14px"><h2 style="margin:0">Upcoming & past</h2><button class="btn sm hide" id="prune"></button></div><div id="list"></div></div>
-<div class="card">
-<h2 id="formTitle">Add event</h2>
-<div class="grid">
-<label>Date<input id="f_day" type="date"></label>
-<label>Time<input id="f_time" placeholder="7PM - 8:15PM PST"></label>
-<label class="full">Title<input id="f_title" placeholder="Hybrid Kunda-Yin Yoga"></label>
-<label class="full">Second line (optional)<input id="f_subtitle" placeholder="Meditation & Sound Healing"></label>
-<label>Venue<input id="f_venue" placeholder="@3TFITNESS"></label>
-<label>Price<input id="f_price" placeholder="$22 or Donation"></label>
-<label class="full">Address<input id="f_address" placeholder="7143 E Southern Ave Suite #129 Mesa, AZ 85209"></label>
-<label class="full">Note (optional)<textarea id="f_note" placeholder="Or live online — private link posted day of"></textarea></label>
-<label class="full">Booking / payment link (optional)<input id="f_link" placeholder="https://… (Venmo, Cash App, form). Blank = Contact page"></label>
-</div>
-<div class="row" style="margin-top:16px"><button class="btn ink" id="add">Add event</button><button class="btn hide" id="cancel">Cancel edit</button></div>
-</div>
-<div class="row"><button class="btn sm" id="logout">Disconnect this device</button></div>
-</div>
-</div>
+<body>
+<header class="top">
+  <div class="bar"><div class="brand">Move yo life<small>ADMIN</small></div>
+    <span id="status" role="status"></span><a href="./" target="_blank" rel="noopener">View site ↗</a>
+    <button class="btn ink" id="publish" disabled>Publish changes</button></div>
+  <nav class="tabs hide" id="tabs" role="tablist"></nav>
+</header>
+<main>
+  <section class="card" id="setup">
+    <h1>Connect</h1>
+    <p class="hint">One time per device. Your token stays in this browser only. Use a fine-grained token limited to this repository, with Contents: read and write.</p>
+    <div class="grid">
+      <label class="full">GitHub repo<input id="repo" value="kedc13/moveyolife-site" autocomplete="off"></label>
+      <label class="full">Access token<input id="token" type="password" placeholder="github_pat_…" autocomplete="off"></label>
+    </div>
+    <div class="row"><button class="btn ink" id="connect">Connect</button></div>
+  </section>
+  <div id="view" class="hide" style="display:flex;flex-direction:column;gap:20px"></div>
+  <div class="row hide" id="foot"><button class="btn sm" id="logout">Disconnect this device</button></div>
+</main>
+<dialog id="libDlg"><div class="row" style="justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--myl-rule)"><b>Choose a photo</b><button class="btn sm" id="libClose">Close</button></div><div class="lib" id="lib"></div></dialog>
+<input type="file" id="file" accept="image/*" class="hide">
 <script>
+(() => {
 const $ = id => document.getElementById(id);
-const F = ["day","time","title","subtitle","venue","price","address","note","link"];
+const el = (tag, attrs = {}, ...kids) => { const n = document.createElement(tag); for (const [k, v] of Object.entries(attrs)) { if (k === "class") n.className = v; else if (k.startsWith("on")) n.addEventListener(k.slice(2), v); else if (v !== false && v != null) n.setAttribute(k, v === true ? "" : v); } kids.flat().forEach(k => n.append(k && k.nodeType ? k : document.createTextNode(k ?? ""))); return n; };
 const MON = ["Jan.","Feb.","Mar.","Apr.","May","June","July","Aug.","Sept.","Oct.","Nov.","Dec."];
-let events = [], sha = null, dirty = false, editing = -1;
-const today = new Date().toISOString().slice(0,10);
+const today = new Date().toISOString().slice(0, 10);
+const LIB = Array.from({ length: 10 }, (_, i) => "images/photo-" + String(i + 1).padStart(2, "0") + "-1600.webp");
 const enc = s => btoa(unescape(encodeURIComponent(s)));
-const dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g,""))));
-const cfg = () => ({ repo: localStorage.getItem("myl_repo") || $("repo").value.trim(), token: localStorage.getItem("myl_token") || "" });
+const dec = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ""))));
+const store = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} }, del: k => { try { localStorage.removeItem(k); } catch (e) {} } };
+const cfg = () => ({ repo: store.get("myl_repo") || $("repo").value.trim(), token: store.get("myl_token") || "" });
 const api = (path, opt = {}) => { const c = cfg(); return fetch("https://api.github.com/repos/" + c.repo + "/contents/" + path, { ...opt, headers: { Authorization: "Bearer " + c.token, Accept: "application/vnd.github+json", ...(opt.headers || {}) } }); };
-const status = (t) => $("status").textContent = t;
-const show = d => d.date || (d.day ? MON[+d.day.slice(5,7)-1] + " " + (+d.day.slice(8)) : "—");
-const titleOf = e => Array.isArray(e.title) ? e.title.join(" · ") : [e.title, e.subtitle].filter(Boolean).join(" · ");
-function render() {
-  const sorted = events.map((e,i)=>({e,i})).sort((a,b)=>(a.e.day||"").localeCompare(b.e.day||""));
-  $("list").innerHTML = sorted.length ? "" : '<p style="color:#5A5552;margin:0">No events yet. Add one below.</p>';
-  sorted.forEach(({e,i}) => {
-    const r = document.createElement("div"); r.className = "ev" + (e.day && e.day < today ? " past" : "");
-    r.innerHTML = '<div class="d"></div><div><div style="font-weight:700"></div><div class="m"></div></div><div class="row act"><button class="btn sm">Edit</button><button class="btn sm">Delete</button></div>';
-    r.children[0].textContent = show(e) + (e.day && e.day < today ? " (past)" : "");
-    r.children[1].children[0].textContent = titleOf(e);
-    r.children[1].children[1].textContent = [e.venue, e.time, e.price].filter(Boolean).join(" · ");
-    const [ed, del] = r.querySelectorAll("button");
-    ed.onclick = () => startEdit(i);
-    del.onclick = () => { if (confirm("Delete “" + titleOf(e) + "”?")) { events.splice(i,1); mark(); } };
-    $("list").appendChild(r);
+const status = t => $("status").textContent = t;
+const preview = {}; // path -> local object URL for images uploaded this session (before the site redeploys)
+const imgURL = p => !p ? "" : preview[p] || (/^images\//.test(p) ? p.replace(/-1600\.webp$/, "-800.webp") : "");
+
+// ---------- data ----------
+const files = { events: { path: "events.json", data: [], sha: null, dirty: false }, content: { path: "content.json", data: {}, sha: null, dirty: false } };
+const TABS = [
+  { id: "events", label: "Events", file: "events" },
+  { id: "confessions", label: "Confessionals", file: "content" },
+  { id: "offers", label: "Experience", file: "content" },
+  { id: "shop", label: "Shop", file: "content" }
+];
+let tab = "events";
+const dirtyTabs = new Set();
+function mark(f) { files[f].dirty = true; dirtyTabs.add(tab); status("Unpublished changes"); $("publish").disabled = false; drawTabs(); }
+
+async function loadFile(f) {
+  const r = await api(files[f].path + "?ref=main&t=" + Date.now());
+  if (r.status === 404) { files[f].sha = null; files[f].data = f === "events" ? [] : {}; return true; }
+  if (!r.ok) throw new Error(r.status);
+  const j = await r.json(); files[f].sha = j.sha; files[f].data = JSON.parse(dec(j.content)); files[f].dirty = false; return true;
+}
+function normEvents(list) {
+  return (Array.isArray(list) ? list : []).map(e => {
+    const o = { ...e };
+    if (Array.isArray(o.title)) { o.subtitle = o.subtitle || o.title[1] || ""; o.title = o.title[0] || ""; }
+    return o;
   });
-  const past = events.filter(e => e.day && e.day < today).length;
-  $("prune").textContent = "Remove " + past + " past event" + (past === 1 ? "" : "s");
-  $("prune").classList.toggle("hide", !past);
-  $("publish").disabled = !dirty;
 }
-$("prune").onclick = () => { events = events.filter(e => !(e.day && e.day < today)); mark(); };
-function mark() { dirty = true; status("Unpublished changes"); render(); }
-function clearForm() { F.forEach(k => $("f_"+k).value = ""); editing = -1; $("formTitle").textContent = "Add event"; $("add").textContent = "Add event"; $("cancel").classList.add("hide"); }
-function startEdit(i) {
-  const e = events[i]; editing = i;
-  const t = Array.isArray(e.title) ? e.title : [e.title, e.subtitle];
-  F.forEach(k => $("f_"+k).value = e[k] || "");
-  $("f_title").value = t[0] || ""; $("f_subtitle").value = t[1] || "";
-  $("formTitle").textContent = "Edit event"; $("add").textContent = "Save edit"; $("cancel").classList.remove("hide");
-  window.scrollTo({ top: $("formTitle").getBoundingClientRect().top + scrollY - 40, behavior: "smooth" });
-}
-$("cancel").onclick = clearForm;
-$("add").onclick = () => {
-  const e = {}; F.forEach(k => { const v = $("f_"+k).value.trim(); if (v) e[k] = v; });
-  if (!e.day || !e.title) { alert("Date and title are required."); return; }
-  if (editing >= 0) events[editing] = e; else events.push(e);
-  clearForm(); mark();
-};
-async function load() {
+async function loadAll() {
   status("Loading…");
-  const r = await api("events.json?ref=main&t=" + Date.now());
-  if (r.status === 404) { events = []; sha = null; status("No events file yet — add events and publish."); render(); return true; }
-  if (!r.ok) { status("Couldn’t connect (" + r.status + "). Check the repo name and token."); return false; }
-  const j = await r.json(); sha = j.sha; events = JSON.parse(dec(j.content)); dirty = false; status("All changes published"); render(); return true;
+  try { await loadFile("events"); await loadFile("content"); }
+  catch (e) { status("Couldn’t connect (" + e.message + "). Check the repo name and token."); return false; }
+  files.events.data = normEvents(files.events.data);
+  const c = files.content.data; ["confessions", "offers", "apparel", "online"].forEach(k => { if (!Array.isArray(c[k])) c[k] = []; });
+  status("All changes published"); return true;
+}
+async function putFile(path, base64, sha, message) {
+  const body = { message, content: base64, branch: "main" }; if (sha) body.sha = sha;
+  const r = await api(path, { method: "PUT", body: JSON.stringify(body) });
+  if (!r.ok) throw new Error(r.status);
+  return (await r.json()).content.sha;
 }
 $("publish").onclick = async () => {
   $("publish").disabled = true; status("Publishing…");
-  events = events.filter(e => !(e.day && e.day < today));
-  const body = { message: "Update events", content: enc(JSON.stringify(events, null, 2)), branch: "main" }; if (sha) body.sha = sha;
-  const r = await api("events.json", { method: "PUT", body: JSON.stringify(body) });
-  if (!r.ok) { status("Publish failed (" + r.status + "). Reload and try again."); $("publish").disabled = false; return; }
-  sha = (await r.json()).content.sha; dirty = false; render(); status("Published. Live on the site in about a minute.");
+  try {
+    for (const f of ["events", "content"]) {
+      if (!files[f].dirty) continue;
+      let data = files[f].data;
+      if (f === "events") data = data.filter(e => !(e.day && e.day < today)).map(e => { const o = {}; for (const [k, v] of Object.entries(e)) if (v !== "" && v != null) o[k] = v; return o; });
+      files[f].sha = await putFile(files[f].path, enc(JSON.stringify(data, null, 2) + "\n"), files[f].sha, "Update " + files[f].path + " from admin");
+      files[f].dirty = false;
+    }
+    dirtyTabs.clear(); status("Published. Live on the site in about a minute."); drawTabs();
+  } catch (e) {
+    status(e.message === "409" ? "Someone else published first. Reload this page, then redo your edit." : "Publish failed (" + e.message + "). Try again.");
+    $("publish").disabled = false;
+  }
 };
+
+// ---------- image upload ----------
+let pickCb = null;
+$("file").onchange = async () => {
+  const f = $("file").files[0]; $("file").value = ""; if (!f || !pickCb) return;
+  const cb = pickCb; pickCb = null;
+  try {
+    status("Preparing photo…");
+    const bmp = await createImageBitmap(f);
+    const s = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const cv = document.createElement("canvas"); cv.width = Math.round(bmp.width * s); cv.height = Math.round(bmp.height * s);
+    cv.getContext("2d").drawImage(bmp, 0, 0, cv.width, cv.height);
+    const blob = await new Promise(r => cv.toBlob(r, "image/webp", 0.8));
+    const b64 = await new Promise(r => { const fr = new FileReader(); fr.onload = () => r(fr.result.split(",")[1]); fr.readAsDataURL(blob); });
+    const slug = (f.name.replace(/\.[^.]+$/, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "photo").slice(0, 40);
+    const path = "images/uploads/" + slug + "-" + Date.now().toString(36) + ".webp";
+    status("Uploading photo…");
+    await putFile(path, b64, null, "Upload " + path + " from admin");
+    preview[path] = URL.createObjectURL(blob);
+    status("Photo uploaded. Publish to put it on the site.");
+    cb(path);
+  } catch (e) { status("Photo upload failed (" + e.message + ")."); }
+};
+function openLib(cb) {
+  const lib = $("lib"); lib.replaceChildren();
+  LIB.forEach(p => lib.append(el("button", { type: "button", "aria-label": p, style: "background-image:url('" + imgURL(p) + "')", onclick: () => { $("libDlg").close(); cb(p); } })));
+  $("libDlg").showModal();
+}
+$("libClose").onclick = () => $("libDlg").close();
+
+function photoField(label, value, onChange, opts = {}) {
+  const thumb = el("div", { class: "thumb" + (value ? "" : " empty") });
+  const paint = v => { const u = imgURL(v); thumb.className = "thumb" + (v ? "" : " empty"); thumb.style.backgroundImage = u ? "url('" + u + "')" : ""; thumb.textContent = v ? (u ? "" : "Default photo") : (opts.emptyText || "No photo"); };
+  paint(value);
+  const set = v => { paint(v); onChange(v); };
+  return el("div", { class: "full" }, el("label", {}, label),
+    el("div", { class: "photo", style: "margin-top:6px" }, thumb,
+      el("div", { class: "row" },
+        el("button", { class: "btn sm", type: "button", onclick: () => { pickCb = set; $("file").click(); } }, "Upload"),
+        opts.library === false ? "" : el("button", { class: "btn sm", type: "button", onclick: () => openLib(set) }, "Library"),
+        el("button", { class: "btn sm", type: "button", onclick: () => set("") }, "Remove"))),
+    opts.hint ? el("p", { class: "hint", style: "margin:8px 0 0" }, opts.hint) : "");
+}
+function input(label, value, onInput, attrs = {}) {
+  const i = el(attrs.multiline ? "textarea" : "input", { ...attrs, multiline: null });
+  i.value = value || ""; i.addEventListener("input", () => onInput(i.value));
+  return el("label", { class: attrs.full ? "full" : "" }, label, i, attrs.help ? el("span", { class: "hint" }, attrs.help) : "");
+}
+function select(label, value, options, onChange) {
+  const s = el("select", {}, options.map(([v, t]) => el("option", { value: v }, t)));
+  s.value = value || options[0][0]; s.addEventListener("change", () => onChange(s.value));
+  return el("label", {}, label, s);
+}
+function listEditor({ items, file, title, addLabel, blank, render, onChange }) {
+  const box = el("div", { style: "display:flex;flex-direction:column;gap:14px" });
+  const draw = () => {
+    box.replaceChildren();
+    if (!items.length) box.append(el("p", { class: "empty-state" }, "Nothing here yet."));
+    items.forEach((it, i) => {
+      const c = el("div", { class: "card" + (it.day && it.day < today ? " past" : "") });
+      const change = () => { mark(file); onChange && onChange(); };
+      c.append(el("div", { class: "card-h" }, el("b", {}, title(it, i)),
+        el("button", { class: "btn sm icon", type: "button", "aria-label": "Move up", disabled: i === 0, onclick: () => { [items[i - 1], items[i]] = [items[i], items[i - 1]]; change(); draw(); } }, "↑"),
+        el("button", { class: "btn sm icon", type: "button", "aria-label": "Move down", disabled: i === items.length - 1, onclick: () => { [items[i + 1], items[i]] = [items[i], items[i + 1]]; change(); draw(); } }, "↓"),
+        el("button", { class: "btn sm", type: "button", onclick: () => { if (confirm("Delete this item?")) { items.splice(i, 1); change(); draw(); } } }, "Delete")));
+      c.append(el("div", { class: "grid" }, render(it, change, draw)));
+      box.append(c);
+    });
+  };
+  draw();
+  return el("div", { style: "display:flex;flex-direction:column;gap:14px" }, box,
+    el("div", { class: "row" }, el("button", { class: "btn ink", type: "button", onclick: () => { items.push(blank()); mark(file); draw(); box.lastChild.scrollIntoView({ behavior: "smooth", block: "center" }); } }, addLabel)));
+}
+
+// ---------- views ----------
+const head = (h, p) => el("div", {}, el("h1", {}, h), el("p", { class: "lead" }, p));
+const fmtDay = d => d ? MON[+d.slice(5, 7) - 1] + " " + (+d.slice(8)) : "";
+const VIEWS = {
+  events() {
+    const items = files.events.data;
+    items.sort((a, b) => (a.day || "").localeCompare(b.day || ""));
+    const past = items.filter(e => e.day && e.day < today).length;
+    const undated = items.filter(e => !e.day).length;
+    return [head("Events", "Shown on the Experience page. Past events are removed when you publish."),
+      undated ? el("p", { class: "hint" }, undated + " event" + (undated > 1 ? "s have" : " has") + " no date picked, so " + (undated > 1 ? "they" : "it") + " will never expire. Pick a date to fix it.") : "",
+      past ? el("p", { class: "hint" }, past + " past event" + (past > 1 ? "s" : "") + " (faded) will be removed on publish.") : "",
+      listEditor({ items, file: "events", addLabel: "Add event",
+        title: e => (e.day ? fmtDay(e.day) : (e.date || "No date")) + (e.day && e.day < today ? " · past" : ""),
+        blank: () => ({ day: "", time: "", title: "", subtitle: "", venue: "", price: "", address: "", note: "", link: "" }),
+        render: (e, ch, draw) => [
+          input("Date", e.day, v => { e.day = v; if (v) delete e.date; ch(); }, { type: "date", onchange: null }),
+          input("Time", e.time, v => { e.time = v; ch(); }, { placeholder: "7PM – 8:15PM" }),
+          input("Title", e.title, v => { e.title = v; ch(); }, { full: true, placeholder: "Hybrid Kunda-Yin Yoga" }),
+          input("Second line (optional)", e.subtitle, v => { e.subtitle = v; ch(); }, { full: true, placeholder: "Meditation & Sound Healing" }),
+          input("Venue", e.venue, v => { e.venue = v; ch(); }, { placeholder: "@3TFITNESS" }),
+          input("Price", e.price, v => { e.price = v; ch(); }, { placeholder: "$22 or Donation" }),
+          input("Address", e.address, v => { e.address = v; ch(); }, { full: true }),
+          input("Note (optional)", e.note, v => { e.note = v; ch(); }, { full: true, multiline: true }),
+          input("Booking / payment link (optional)", e.link, v => { e.link = v; ch(); }, { full: true, type: "url", placeholder: "https://…", help: "Leave blank to send people to the Contact page." })
+        ] })];
+  },
+  confessions() {
+    const items = files.content.data.confessions;
+    return [head("Confessionals", "Messages people sent after they moved. Shown on Home; tick “Work with Mo” to also show one there."),
+      listEditor({ items, file: "content", addLabel: "Add message",
+        title: (c, i) => (i + 1) + " · " + ("screenshot" in c ? "Screenshot" : "Text message") + (c.from ? " · " + c.from : "") + ("screenshot" in c && !c.screenshot ? " · hidden until a screenshot is added" : ""),
+        blank: () => ({ from: "", time: "", text: [] }),
+        render: (c, ch, draw) => {
+          const isShot = "screenshot" in c;
+          const out = [
+            select("Type", isShot ? "shot" : "text", [["text", "Text message"], ["shot", "Screenshot"]], v => { if (v === "shot") { c.screenshot = c.screenshot || ""; delete c.text; delete c.photo; } else { delete c.screenshot; c.text = c.text || []; } ch(); draw(); }),
+            input("From", c.from, v => { c.from = v; ch(); }, { placeholder: "Thursday class" }),
+            input("Time label", c.time, v => { c.time = v; ch(); }, { placeholder: "Thu 7:02 PM" })];
+          if (isShot) out.push(photoField("Screenshot", c.screenshot, v => { c.screenshot = v; ch(); }, { library: false, emptyText: "Needs screenshot", hint: "Hidden on the site until you add one." }));
+          else {
+            out.push(input("Message", (c.text || []).join("\n\n"), v => { c.text = v.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean); ch(); }, { full: true, multiline: true, rows: 5, help: "Leave a blank line between bubbles." }));
+            out.push(photoField("Photo in the thread (optional)", c.photo, v => { if (v) c.photo = v; else delete c.photo; ch(); }));
+          }
+          const cb = el("input", { type: "checkbox" }); cb.checked = !!c.work; cb.onchange = () => { if (cb.checked) c.work = true; else delete c.work; ch(); };
+          out.push(el("label", { class: "chk full" }, cb, "Also show on Work with Mo"));
+          return out;
+        } })];
+  },
+  offers() {
+    const items = files.content.data.offers;
+    return [head("Experience", "The “Ways to experience” list on the Experience page."),
+      listEditor({ items, file: "content", addLabel: "Add offering",
+        title: (o, i) => String(i + 1).padStart(2, "0") + (o.title ? " · " + o.title : ""),
+        blank: () => ({ title: "", text: "", photo: "" }),
+        render: (o, ch) => [
+          input("Title", o.title, v => { o.title = v; ch(); }, { full: true }),
+          input("Description", o.text, v => { o.text = v; ch(); }, { full: true, multiline: true }),
+          photoField("Photo (shows on hover)", o.photo, v => { o.photo = v; ch(); })
+        ] })];
+  },
+  shop() {
+    const c = files.content.data;
+    return [head("Shop", "Apparel and online offerings on the Shop page."),
+      el("div", { class: "card" }, el("div", { class: "grid" }, input("Store link (Printify)", c.shopUrl, v => { c.shopUrl = v.trim(); mark("content"); }, { full: true, type: "url", placeholder: "https://your-store.printify.me", help: "Adds a “Shop apparel” button, and product tiles open the store unless they have their own link." }))),
+      el("h2", { style: "font:700 13px/1 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;margin:12px 0 0" }, "Apparel"),
+      listEditor({ items: c.apparel, file: "content", addLabel: "Add product",
+        title: (a, i) => (i + 1) + (a.name ? " · " + a.name : ""),
+        blank: () => ({ name: "", note: "", price: "", tone: "sand" }),
+        render: (a, ch) => [
+          input("Name", a.name, v => { a.name = v; ch(); }),
+          input("Price", a.price, v => { a.price = v; ch(); }, { placeholder: "$35" }),
+          input("Details", a.note, v => { a.note = v; ch(); }, { placeholder: "Black · S–XXL" }),
+          select("Tile color (when no photo)", a.tone, [["sand", "Sand"], ["mist", "Mist"], ["ink", "Ink"]], v => { a.tone = v; ch(); }),
+          input("Buy link (optional)", a.link, v => { if (v) a.link = v; else delete a.link; ch(); }, { full: true, type: "url", placeholder: "https://…" }),
+          photoField("Product photo (optional)", a.image, v => { if (v) a.image = v; else delete a.image; ch(); }, { hint: "Without a photo, the tile shows the logo." })
+        ] }),
+      el("h2", { style: "font:700 13px/1 var(--font-sans);letter-spacing:.08em;text-transform:uppercase;margin:24px 0 0" }, "Online classes + courses"),
+      listEditor({ items: c.online, file: "content", addLabel: "Add online offering",
+        title: (o, i) => String(i + 1).padStart(2, "0") + (o.name ? " · " + o.name : ""),
+        blank: () => ({ name: "", text: "", status: "Coming soon" }),
+        render: (o, ch) => [
+          input("Name", o.name, v => { o.name = v; ch(); }),
+          input("Status label", o.status, v => { o.status = v; ch(); }, { placeholder: "Coming soon / Enroll" }),
+          input("Description", o.text, v => { o.text = v; ch(); }, { full: true, multiline: true }),
+          input("Link (optional)", o.link, v => { if (v) o.link = v; else delete o.link; ch(); }, { full: true, type: "url", placeholder: "https://…", help: "Adds a link on the status label." })
+        ] })];
+  }
+};
+function drawTabs() {
+  $("tabs").replaceChildren(...TABS.map(t => el("button", { class: "tab", role: "tab", "aria-selected": t.id === tab ? "true" : "false", onclick: () => { tab = t.id; drawTabs(); draw(); } },
+    t.label, dirtyTabs.has(t.id) ? el("span", { class: "dot", "aria-label": "unpublished" }) : "")));
+}
+function draw() { $("view").replaceChildren(...VIEWS[tab]().filter(Boolean)); window.scrollTo(0, 0); }
+function enter() { ["setup"].forEach(i => $(i).classList.add("hide")); ["view", "tabs", "foot"].forEach(i => $(i).classList.remove("hide")); drawTabs(); draw(); }
+
 $("connect").onclick = async () => {
-  localStorage.setItem("myl_repo", $("repo").value.trim()); localStorage.setItem("myl_token", $("token").value.trim());
-  if (await load()) { $("setup").classList.add("hide"); $("app").classList.remove("hide"); } else localStorage.removeItem("myl_token");
+  store.set("myl_repo", $("repo").value.trim()); store.set("myl_token", $("token").value.trim());
+  if (await loadAll()) enter(); else store.del("myl_token");
 };
-$("logout").onclick = () => { localStorage.removeItem("myl_token"); location.reload(); };
-window.onbeforeunload = () => dirty ? "You have unpublished changes." : undefined;
-if (cfg().token) load().then(ok => { if (ok) { $("setup").classList.add("hide"); $("app").classList.remove("hide"); } });
+$("logout").onclick = () => { store.del("myl_token"); location.reload(); };
+window.addEventListener("beforeunload", e => { if (files.events.dirty || files.content.dirty) { e.preventDefault(); e.returnValue = ""; } });
+if (cfg().token) loadAll().then(ok => ok && enter());
+})();
 </script>
 </body></html>
