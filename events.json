@@ -1,12 +1,14 @@
 [
   {
-    "day": "2026-11-04",
-    "time": "6:30PM-8:30PM PST",
-    "title": "Special Lyons Gate Yoga",
-    "subtitle": "Meditation & Sound Healing",
+    "date": "Aug. 8",
+    "title": [
+      "Special Lyons Gate Yoga",
+      "Meditation & Sound Healing"
+    ],
     "venue": "@Lyonsgate Community Pool",
-    "price": "Donation",
-    "address": "1804 S Rockwell St Gilbert AZ 85295"
+    "address": "1804 S Rockwell St Gilbert AZ 85295",
+    "time": "6:30PM-8:30PM PST",
+    "price": "Donation"
   },
   {
     "date": "Aug. 18",
